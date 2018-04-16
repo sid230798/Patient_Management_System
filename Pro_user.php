@@ -1,7 +1,8 @@
 <?php
 
-        include 'includes/Connection.php';
+        include 'includes/connection.php';
         
+        session_start();
         $username = $_SESSION['login_user'];
         /*
         $sql = "select * from (Patient as p join (Patient_Doctor as pd join Doctor as d using(doctor_id)) using(P_id)),Appointments as a where a.P_id = p.p_id and a.doctor_id = d.doctor_id and p.email = '$username' and a.time >= 'now()'";
@@ -67,14 +68,21 @@
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="#">Home</a></li>
-        <li><a href="#">Page 1</a></li>
+        <li><a href="index.php">Home</a></li>
+        <li><a href="Departments.php">Departments</a></li>
+        <!--
         <li><a href="#">Page 2</a></li>
         <li><a href="#">Page 3</a></li>
+        -->
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-        <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+        <?php if(isset($_SESSION['login_user'])){ ?>
+       <li><a href="#"><span class="glyphicon glyphicon-user"></span><?php   echo $_SESSION['login_user']; ?></a></li>
+      <li><a href="logout.php"><span class="glyphicon glyphicon-user"></span> Logout</a></li>
+      <?php  }else{ ?>
+        <li><a href="./PHP-login_sign_up/sign_up.php"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+        <li><a href="./PHP-login_sign_up/login.php"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+        <?php   } ?>
       </ul>
       </div>
       </div>
@@ -90,16 +98,16 @@
   <div class="card-body">
     <h4 class="card-title">Card title</h4>
     <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-    <a href="#" class="btn btn-primary" style="width: 45%;margin-left:4%" onclick = "changeIframe(Appointments.php?q=<?php  echo $row['P_id']; ?>)">Appointments</a>
-    <a href="#" class="btn btn-primary" style="width: 45%" onclick = "changeIframe(Bills.php?q=<?php  echo $row['P_id']; ?>)">Bills</a>
-    <a href="#" class="btn btn-primary" style="width: 45%;margin-left:4%" onclick = "changeIframe(Records.php?q=<?php  echo $row['P_id']; ?>)">Previous Record</a>
-    <a href="#" class="btn btn-primary" style="width: 45%" onclick = "changeIframe(Review.php?q=<?php  echo $row['P_id']; ?>)">Reviews</a>
+    <a href="Appointments.php?q=<?php  echo $row['P_id']; ?>" target = "frame" class="btn btn-primary" style="width: 45%;margin-left:4%">Appointments</a>
+    <a href="Bills.php?q=<?php  echo $row['P_id']; ?>" target = "frame" class="btn btn-primary" style="width: 45%">Bills</a>
+    <a href="Records.php?q=<?php  echo $row['P_id']; ?>" target ="frame" class="btn btn-primary" style="width: 45%;margin-left:4%">Previous Record</a>
+    <a href="Review.php?q=<?php  echo $row['P_id']; ?>" target = "frame" class="btn btn-primary" style="width: 45%">Reviews</a>
   </div>
   
 </div>
   </div>
   <div class = "col-sm-9" style="overflow: auto; max-height: 100vh;">
-  <iframe src="usersource.html" width="100%" height="500px" frameborder="0" id="frame"></iframe></div>
+  <iframe src="usersource.html" width="100%" height="500px" frameborder="0" id="frame" name="frame"></iframe></div>
   <script>
   
         function changeIframe(x){

@@ -3,6 +3,31 @@
 Showing Reviews Query as : 
 Select first_name,last_name,image_url,Rating,text from Reviews join Patient using(P_id) where doctor_id = 1;
 -->
+<?php
+
+        include 'includes/connection.php';
+        
+        session_start();
+        
+        $_SESSION['url'] = $_SERVER['REQUEST_URI'];
+        $row = null;
+        
+        if(isset($_GET['q'])){
+        
+                $doctor_id = $_GET['q'];
+                /*
+                $sql = "select Patient.first_name,Patient.last_name,Reviews.Rating,Reviews.text from Doctor join (Reviews join Patient using(P_id)) using(doctor_id) where doctor_id = ".$doctor_id;
+                */
+                $sql = "select * from Doctor where doctor_id = ".$doctor_id;
+                $result = $conn->query($sql);
+                
+                $row = $result->fetch_assoc();
+        
+        }
+        
+
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -33,14 +58,21 @@ Select first_name,last_name,image_url,Rating,text from Reviews join Patient usin
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="#">Home</a></li>
-        <li><a href="#">Page 1</a></li>
+        <li><a href="index.php">Home</a></li>
+        <li><a href="Departments.php">Departments</a></li>
+        <!--
         <li><a href="#">Page 2</a></li>
         <li><a href="#">Page 3</a></li>
+        -->
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-        <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+        <?php if(isset($_SESSION['login_user'])){ ?>
+       <li><a href="#"><span class="glyphicon glyphicon-user"></span><?php   echo $_SESSION['login_user']; ?></a></li>
+      <li><a href="logout.php"><span class="glyphicon glyphicon-user"></span> Logout</a></li>
+      <?php  }else{ ?>
+        <li><a href="./PHP-login_sign_up/sign_up.php"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+        <li><a href="./PHP-login_sign_up/login.php"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+        <?php   } ?>
       </ul>
       </div>
       </div>
@@ -63,12 +95,33 @@ Select first_name,last_name,image_url,Rating,text from Reviews join Patient usin
   <div class = "container">
   <!-- dep name card -->
   <div class = "col-sm-3">
-  <img class = "img-rounded img-responsive img-raised" src="images/doc.jpg"></div>
-  <div class = "col-sm-9"><h3>Doctor Name</h3></div>
+  <img class = "img-rounded img-responsive img-raised" src="<?php echo $row['image_url'] ?>"></div>
+  <div class = "col-sm-9"><h3>Doctor Name : <?php echo $row['first_name']." ".$row['last_name']; ?></h3></div>
   <div class = "col-sm-9"><h3>Doctor BIO:</h3></div>
   <div class = "col-sm-9"><h3>Doctor Education:</h3></div>
   <div class = "col-sm-9"><h3>Doctor Specialization:</h3></div>
-  <div class = "col-sm-9"><h3>Book appointment</h3></div>
+  <div class = "col-sm-9"><button onclick="myFunction(this)">Book appointment</button></div>
+  <script>
+  
+        function myFunction(x){
+        
+                if(<?php if(isset($_SESSION['login_user'])) echo 1; else echo 0; ?>){
+                
+                        x.setAttribute("data-target","#myModal");
+                        x.setAttribute("data-toggle","modal");
+                        
+                        
+                }else{
+                
+                        window.location="./PHP-login_sign_up/login.php";
+                
+                }
+        
+        
+        
+        }
+        
+  </script>
   </div>
   <div class = "container">
     <h3>Reviews</h3>
@@ -108,12 +161,9 @@ Select first_name,last_name,image_url,Rating,text from Reviews join Patient usin
               <div class="modal-body">
                 <form action = "" method="post">
                 <label> Name : </label>
-                <input type="text" name = "name" readonly><?php echo $row['first_name']."  ".$row['last_name']; ?></input>
-                <label> Date of Appointment : </label>
-                <input type="text" name = "Date" readonly><?php echo $row['Date'];?></input>
-                <label> Time of Appointment : </label>
-                <input type="text" name = "time" readonly><?php echo $row['time_start']; ?></input>
-                <label> Reason Description : </label>
+                <input type="text" name = "name" placeholder = "Enter Your Name"></input>
+                
+                <label> Description : </label>
                 <textarea class = 'form-control' rows="10" cols="50">Enter Your Text Here ...</textarea>
                 <div class="modal-footer">
                 <button type="button" class="btn btn-default btn-simple" data-dismiss="modal">Close</button>

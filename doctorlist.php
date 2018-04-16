@@ -1,6 +1,8 @@
 <?php
         include 'includes/connection.php';
         
+        session_start();
+        
         if(isset($_GET['q'])){
         
                 $dept_name = $_GET['q'];
@@ -46,14 +48,21 @@
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="#">Home</a></li>
-        <li><a href="#">Page 1</a></li>
+        <li><a href="index.php">Home</a></li>
+        <li><a href="Departments.php">Departments</a></li>
+        <!--
         <li><a href="#">Page 2</a></li>
         <li><a href="#">Page 3</a></li>
+        -->
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-        <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+        <?php if(isset($_SESSION['login_user'])){ ?>
+       <li><a href="#"><span class="glyphicon glyphicon-user"></span><?php   echo $_SESSION['login_user']; ?></a></li>
+      <li><a href="logout.php"><span class="glyphicon glyphicon-user"></span> Logout</a></li>
+      <?php  }else{ ?>
+        <li><a href="./PHP-login_sign_up/sign_up.php"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+        <li><a href="./PHP-login_sign_up/login.php"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+        <?php   } ?>
       </ul>
       </div>
       </div>
@@ -81,7 +90,7 @@
   <div class = "card card-1">
   <div style="margin-right: 4%; margin-left: 4%; padding-top: 4%">
   <img width="100%" src="<?php  echo $row['image_url']; ?>">
-  <div style="text-align: center;"><h4><a href="doctorbook.html?q=<?php echo $row['doctor_id']?>"><?php  echo $row['first_name']." ".$row['last_name'];  ?></a></h4></div>
+  <div style="text-align: center;"><h4><a href="doctorbook.php?q=<?php echo $row['doctor_id']?>"><?php  echo $row['first_name']." ".$row['last_name'];  ?></a></h4></div>
   </div>
   </div>
   </div>

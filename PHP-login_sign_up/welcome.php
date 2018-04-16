@@ -1,5 +1,5 @@
 <?php
-   include("connection.php");
+   include("../includes/connection.php");
   session_start();
   
   $user_check = $_SESSION['login_user'];
@@ -9,6 +9,12 @@
   //$login_session = $re['UserID'];
  // $login_session = $result->fetch_assoc();
   //$login_session = $login_session['pass'];
+  if(isset($_SESSION['url'])){
+					                
+					                $url = $_SESSION['url'];
+					                echo 'Yes';
+					                //header("location: welcome.php");
+					        }
   if(!isset($_SESSION['login_user'])){
       header("location:index.php");
    }

@@ -1,14 +1,15 @@
 <?php
 
-        include 'includes/Connection.php';
+        include 'includes/connection.php';
         
-        if(isset($_GET['q']){
+        if(isset($_GET['q'])){
         
                 $P_id = $_GET['q'];
                 /*Update Query For Appointments*/
-                $sql = "select d.first_name as first_name,d.last_name as last_name,a.Date as Date,s.time_start as time_start,d.image_url as image_url from Doctor as d join (Appointments as a join slots as s using(slot_id)) using(doctor_id) where a.P_id = '$P_id' and a.Time >= now()";
+                $sql = "select d.first_name as first_name,d.last_name as last_name,a.Date as Date,s.time_start as time_start,d.image_url as image_url from Doctor as d join (Appointments as a join slots as s using(slot_id)) using(doctor_id) where a.P_id = '$P_id'";
                 
                 $result = $conn->query($sql);
+                
                 /*Sample Query for cancelling the appointment    "delete from Appointments where App_ID = id"  location.reload() for reloading*/ 
                 
                 /*SELECT slot_id,time_start,time_end from slots where slot_id not in (
@@ -16,7 +17,7 @@
     UNION
 	select slot_id from unavailable where doctor_id = 3 and Date = '2018-04-11');  for Available slots*/               
         }
-        
+        /*
         if($_SERVER["REQUEST_METHOD"] == "POST"){
         
                 if($_POST['Submit']){
@@ -57,7 +58,7 @@
         
         
         
-        }
+        }*/
         
 
 ?>
@@ -104,7 +105,7 @@
         while(($row = $result->fetch_assoc())){
 ?>
   <div class = "card card-1" style="margin-left: 0%;border-radius: 10px; margin-right: 0%; ">
-  <div class = "col-sm-2"><img src="<?php if($row['image_url'] != null)  echo $row['image_url']; ?>"></div>
+  <div class = "col-sm-2"><img src="<?php  echo $row['image_url']; ?>"></div>
   <div class="col-sm-10">
   <div style="padding-left: 0%"><!--<h3>Doctor IMAGE</h3>--></div>
   <div style="padding-left: 0%"><h4><?php echo $row['first_name']."  ".$row['last_name']; ?></h4></div>

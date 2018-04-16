@@ -2,7 +2,7 @@
 <?php
 
 /*Connection =.php will be included in inncludes folder*/
-include("connection.php");
+include("../includes/connection.php");
 
 session_start();
 
@@ -18,16 +18,24 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 				if(isset($_POST['user']) && !isset($_POST['doctor']))
 					{
 					 
-					 $password = md5($password);
-                      $sql = "select P_id , count(*) as total from auth_patient where email = '".$username."' and password = '".$password."' ";
+					 //$password = md5($password);
+                      $sql = "select * from Auth_patient where email = '".$username."' and password = '".$password."' ";
 					  $result = $conn->query($sql);
 					  $row = $result->fetch_assoc();
      
-					  if( $row['total']!=0)
+					  if($row)
 						{ 
                            $_SESSION['login_user'] = $username;   	                  
-					        echo  $username." signed in "; 
- 		                    header("location: welcome.php");
+					        echo  $username." signed in ";
+					       
+					        if(isset($_SESSION['url'])){
+					                
+					                $url = $_SESSION['url'];
+					                
+					                header("location: $url");
+					        }
+					        else 
+ 		                                        header("location: ../index.php");
 						}
 					 else
 					   {
@@ -45,7 +53,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 						{ 
                            $_SESSION['login_user'] = $username;   	                  
 					        echo  $username." Doctor signed in "; 
- 		                    header("location: welcome.php");
+ 		                    header("location: ../index.php");
 						}
 					 else
 					   {
@@ -77,8 +85,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
     <head>
 	    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 		<link rel="stylesheet" href="CSS-login_sign_up/login.css">
-		<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-		<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+		<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
 	</head>
 	  
 	 <body>

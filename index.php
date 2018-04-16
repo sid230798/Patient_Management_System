@@ -1,3 +1,7 @@
+<?php
+
+        session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -31,14 +35,20 @@
       <ul class="nav navbar-nav navbar-right">
         <li><a href="index.php">Home</a></li>
         <li><a href="Departments.php">Departments</a></li>
+        <li><a href="Pro_user.php">User</a></li>
         <!--
         <li><a href="#">Page 2</a></li>
         <li><a href="#">Page 3</a></li>
         -->
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-        <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+      <?php if(isset($_SESSION['login_user'])){ ?>
+       <li><a href="#"><span class="glyphicon glyphicon-user"></span><?php   echo $_SESSION['login_user']; ?></a></li>
+      <li><a href="logout.php"><span class="glyphicon glyphicon-user"></span> Logout</a></li>
+      <?php  }else{ ?>
+        <li><a href="./PHP-login_sign_up/sign_up.php"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+        <li><a href="./PHP-login_sign_up/login.php"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+        <?php   } ?>
       </ul>
     </div>
   </div>
