@@ -17,7 +17,7 @@
     UNION
 	select slot_id from unavailable where doctor_id = 3 and Date = '2018-04-11');  for Available slots*/               
         }
-        /*
+        
         if($_SERVER["REQUEST_METHOD"] == "POST"){
         
                 if($_POST['Submit']){
@@ -58,7 +58,7 @@
         
         
         
-        }*/
+        }
         
 
 ?>
